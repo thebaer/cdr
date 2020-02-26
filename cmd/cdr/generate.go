@@ -25,7 +25,7 @@ func newMixtape(wd string) (*cdr.Mixtape, error) {
 	filepath.Walk(wd, func(path string, i os.FileInfo, err error) error {
 		if !i.IsDir() && !strings.HasPrefix(i.Name(), ".") && i.Name() != "index.html" {
 			t, err := cdr.NewTrack(i.Name())
-			if err == nil {
+			if err != nil {
 				log.Printf("Skipping track %s: %v", i.Name(), err)
 				return nil
 			}
