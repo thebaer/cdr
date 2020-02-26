@@ -1,4 +1,4 @@
-//go:generate inline -o templates.go -p cdr templates/parts.tmpl
+//go:generate inline -o templates.go -p cdr mixtape.tmpl templates/parts.tmpl
 
 package cdr
 
@@ -15,7 +15,10 @@ func Render(m *Mixtape, w io.Writer) error {
 	}
 	mixtapeRawTmpl, err := ioutil.ReadFile("mixtape.tmpl")
 	if err != nil {
-		return err
+		mixtapeRawTmpl, err = ReadAsset("mixtape.tmpl", false)
+		if err != nil {
+			return err
+		}
 	}
 	t, err := template.New("mixtape").Parse(string(mixtapeRawTmpl) + string(partsRawTmpl))
 	if err != nil {
