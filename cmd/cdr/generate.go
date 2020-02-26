@@ -17,6 +17,11 @@ var (
 		Usage:  "serve the mixtape site",
 		Action: serveAction,
 	}
+	cmdGenerate = cli.Command{
+		Name:   "burn",
+		Usage:  "generate the static mixtape site",
+		Action: generateAction,
+	}
 )
 
 func newMixtape(wd string) (*cdr.Mixtape, error) {
@@ -36,6 +41,31 @@ func newMixtape(wd string) (*cdr.Mixtape, error) {
 		return nil
 	})
 	return m, nil
+}
+
+func generateAction(c *cli.Context) error {
+	f, err := os.Create("index.html")
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	wd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
+	m, err := newMixtape(wd)
+	if err != nil {
+		return err
+	}
+
+	err = cdr.Render(m, f)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func serveAction(c *cli.Context) error {
