@@ -3,7 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/thebaer/cdr"
 )
@@ -16,13 +19,19 @@ var printUsage = func() {
 func main() {
 	flag.Usage = printUsage
 	flag.Parse()
-	if flag.NArg() != 1 {
-		printUsage()
-		return
-	}
 
-	file := flag.Arg(0)
-	oldFilename, trackName := cdr.RenameTrack(file)
-	fmt.Println("Renaming", oldFilename, "to", trackName)
-	os.Rename(oldFilename, trackName)
+	wd, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+	filepath.Walk(wd, func(path string, i os.FileInfo, err error) error {
+		if !i.IsDir() && !strings.HasPrefix(i.Name(), ".") {
+			fName := i.Name()
+			trackName := cdr.RenameTrack(fName)
+			fmt.Println("Renaming", fName, "to", trackName)
+			os.Rename(fName, trackName)
+		}
+
+		return nil
+	})
 }
