@@ -13,17 +13,16 @@ import (
 
 var trackNameReg = regexp.MustCompile("^([0-9]{2}).+")
 
-func NewTrack(file string) *Track {
+func NewTrack(file string) (*Track, error) {
 	f, err := os.Open(file)
 	if err != nil {
-		fmt.Printf("error loading file: %v", err)
-		return nil
+		return nil, fmt.Errorf("error loading file: %v", err)
 	}
 	defer f.Close()
 
 	m, err := tag.ReadFrom(f)
 	if err != nil {
-		return nil
+		return nil, fmt.Errorf("unable to read file: %v", err)
 	}
 
 	return &Track{
@@ -36,7 +35,10 @@ func NewTrack(file string) *Track {
 // RenameTrack takes a filename, opens it, reads the metadata, and returns both
 // the old and new filename.
 func RenameTrack(file string) string {
-	t := NewTrack(file)
+	t, err := NewTrack(file)
+	if err != nil {
+		return ""
+	}
 
 	// Extract playlist track number from filename
 	fMatch := trackNameReg.FindStringSubmatch(t.Filename)
