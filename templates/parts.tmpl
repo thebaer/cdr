@@ -1,0 +1,60 @@
+{{define "player"}}
+    {{with $x := index . 0}}
+    <audio id="player" preload="auto" tabindex="0" controls>
+        <source src="{{$x.Filename}}">
+    </audio>
+    {{end}}
+    <ol id="playlist">
+        {{range $i, $el := .}}
+        <li{{if eq $i 0}} class="active"{{end}}>
+            <a href="{{$el.Filename}}">{{$el.Artist}} - {{$el.Title}}</a>
+        </li>
+        {{end}}
+    </ol>
+{{end}}
+
+{{define "full-player"}}
+    {{template "player" .}}
+    {{template "playlist-js"}}
+{{end}}
+
+{{define "playlist-js"}}
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+        $(document).ready(function() {
+            init();
+
+            function init() {
+                var current = 0;
+                var $audio = $('#player');
+                var $playlist = $('#playlist');
+                var $tracks = $playlist.find('li a');
+                var len = $tracks.length - 1;
+                $playlist.on('click', 'a', function (e) {
+                    e.preventDefault();
+                    link = $(this);
+                    current = link.parent().index();
+                    run(link, $audio[0]);
+                });
+                $audio[0].addEventListener('ended', function (e) {
+                    current++;
+                    if (current == len) {
+                        current = 0;
+                        link = $playlist.find('a')[0];
+                    } else {
+                        link = $playlist.find('a')[current];
+                    }
+                    run($(link), $audio[0]);
+                });
+            }
+
+            function run($link, $player) {
+                $player.src = $link.attr('href');
+                par = $link.parent();
+                par.addClass('active').siblings().removeClass('active');
+                $player.load();
+                $player.play();
+            }
+        });
+	</script>
+{{end}}
