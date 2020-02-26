@@ -1,37 +1,27 @@
 package main
 
 import (
-	"flag"
-	"fmt"
 	"log"
 	"os"
-	"path/filepath"
-	"strings"
 
-	"github.com/thebaer/cdr"
+	"github.com/urfave/cli"
 )
 
-var printUsage = func() {
-	fmt.Fprintf(os.Stderr, "usage: %s [optional flags] filename\n", os.Args[0])
-	flag.PrintDefaults()
-}
-
 func main() {
-	flag.Usage = printUsage
-	flag.Parse()
-
-	wd, err := os.Getwd()
-	if err != nil {
-		log.Fatal(err)
+	app := &cli.App{
+		Name:    "CD-R 700MB",
+		Usage:   "A static mixtape site generator",
+		Version: "v1.0",
+		Flags:   []cli.Flag{},
 	}
-	filepath.Walk(wd, func(path string, i os.FileInfo, err error) error {
-		if !i.IsDir() && !strings.HasPrefix(i.Name(), ".") {
-			fName := i.Name()
-			trackName := cdr.RenameTrack(fName)
-			fmt.Println("Renaming", fName, "to", trackName)
-			os.Rename(fName, trackName)
-		}
 
-		return nil
-	})
+	app.Commands = []*cli.Command{
+		&cmdClean,
+	}
+
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Println(err.Error())
+		os.Exit(1)
+	}
 }
