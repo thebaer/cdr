@@ -29,7 +29,7 @@ func NewTrack(file string) (*Track, error) {
 		Title:    m.Title(),
 		Artist:   m.Artist(),
 		Filename: f.Name(),
-	}
+	}, nil
 }
 
 // RenameTrack takes a filename, opens it, reads the metadata, and returns both
