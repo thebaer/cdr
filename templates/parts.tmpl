@@ -9,7 +9,7 @@
     <ol id="playlist">
         {{range $i, $el := .}}
         <li{{if eq $i 0}} class="active"{{end}}>
-            <a href="{{$el.Filename}}">{{$el.Artist}} - {{$el.Title}}</a>
+            <a class="track" href="{{$el.Filename}}">{{$el.Artist}} - {{$el.Title}}</a>
             {{template "track-info" $el}}
         </li>
         {{end}}
@@ -31,14 +31,13 @@
             var current = 0;
             var $audio = $('#player');
             var $playlist = $('#playlist');
-            var $tracks = $playlist.find('li a');
+            var $tracks = $playlist.find('li a.track');
             var len = $tracks.length;
 
-            $playlist.on('click', 'a', function (e) {
+            $playlist.on('click', 'a.track', function (e) {
                 e.preventDefault();
                 link = $(this);
                 current = link.parent().index();
-                console.log(current);
                 play(link, $audio[0]);
             });
             $audio[0].addEventListener('ended', function (e) {
@@ -56,11 +55,9 @@
             function playPrev() {
                 current--;
                 if (current <= 0) {
-                    current = len;
-                    link = $playlist.find('a')[0];
-                } else {
-                    link = $playlist.find('a')[current];
+                    current = len - 1;
                 }
+                link = $playlist.find('a.track')[current];
                 play($(link), $audio[0]);
             }
 
@@ -68,10 +65,8 @@
                 current++;
                 if (current == len) {
                     current = 0;
-                    link = $playlist.find('a')[0];
-                } else {
-                    link = $playlist.find('a')[current];
                 }
+                link = $playlist.find('a.track')[current];
                 play($(link), $audio[0]);
             }
 
