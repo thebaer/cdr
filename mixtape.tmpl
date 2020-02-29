@@ -14,8 +14,15 @@
 			#playlist li {
 				margin: 0.5em 0;
 			}
+			li p {
+				display: none;
+				font-style: italic;
+			}
 			li.active a {
 				font-weight: bold;
+			}
+			li.active p {
+				display: block;
 			}
 		</style>
 	</head>
@@ -23,4 +30,15 @@
 		{{template "full-player" .Tracks}}
 	</body>
 </html>
+{{end}}
+
+{{define "track-info"}}
+    {{if eq .Num 1}}
+		<p>[Here I might introduce this mix.]</p>
+		<p>[Some notes about track 1.]</p>
+    {{else if eq .Num 2}}
+		<p>[Some notes about track 2.]</p>
+    {{else if eq .Num 5}}
+		<p>[Some notes about track 5.]</p>
+    {{end}}
 {{end}}

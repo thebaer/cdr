@@ -10,10 +10,13 @@
         {{range $i, $el := .}}
         <li{{if eq $i 0}} class="active"{{end}}>
             <a href="{{$el.Filename}}">{{$el.Artist}} - {{$el.Title}}</a>
+            {{template "track-info" $el}}
         </li>
         {{end}}
     </ol>
 {{end}}
+
+{{define "track-info"}}{{end}}
 
 {{define "full-player"}}
     {{template "player" .}}

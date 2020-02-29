@@ -34,8 +34,15 @@ var files = map[string]string{
 			#playlist li {
 				margin: 0.5em 0;
 			}
+			li p {
+				display: none;
+				font-style: italic;
+			}
 			li.active a {
 				font-weight: bold;
+			}
+			li.active p {
+				display: block;
 			}
 		</style>
 	</head>
@@ -43,6 +50,17 @@ var files = map[string]string{
 		{{template "full-player" .Tracks}}
 	</body>
 </html>
+{{end}}
+
+{{define "track-info"}}
+    {{if eq .Num 1}}
+		<p>[Here I might introduce this mix.]</p>
+		<p>[Some notes about track 1.]</p>
+    {{else if eq .Num 2}}
+		<p>[Some notes about track 2.]</p>
+    {{else if eq .Num 5}}
+		<p>[Some notes about track 5.]</p>
+    {{end}}
 {{end}}`,
 	"templates/parts.tmpl": `{{define "player"}}
     {{with $x := index . 0}}
@@ -56,10 +74,13 @@ var files = map[string]string{
         {{range $i, $el := .}}
         <li{{if eq $i 0}} class="active"{{end}}>
             <a href="{{$el.Filename}}">{{$el.Artist}} - {{$el.Title}}</a>
+            {{template "track-info" $el}}
         </li>
         {{end}}
     </ol>
 {{end}}
+
+{{define "track-info"}}{{end}}
 
 {{define "full-player"}}
     {{template "player" .}}
