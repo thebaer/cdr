@@ -50,6 +50,8 @@ var files = map[string]string{
         <source src="{{$x.Filename}}">
     </audio>
     {{end}}
+{{end}}
+{{define "playlist"}}
     <ol id="playlist">
         {{range $i, $el := .}}
         <li{{if eq $i 0}} class="active"{{end}}>
@@ -61,6 +63,7 @@ var files = map[string]string{
 
 {{define "full-player"}}
     {{template "player" .}}
+    {{template "playlist" .}}
     {{template "playlist-js"}}
 {{end}}
 
