@@ -9,6 +9,7 @@ import (
 	"unicode"
 
 	"github.com/dhowden/tag"
+	"github.com/rainycape/unidecode"
 )
 
 var trackNameReg = regexp.MustCompile("^([0-9]{2}).+")
@@ -63,5 +64,6 @@ func Sanitize(s string) string {
 		}
 		return r
 	}, s)
+	s = unidecode.Unidecode(s)
 	return s
 }
