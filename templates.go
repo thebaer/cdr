@@ -71,33 +71,54 @@ var files = map[string]string{
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 	<script type="text/javascript">
         $(document).ready(function() {
-            init();
+            var current = 0;
+            var $audio = $('#player');
+            var $playlist = $('#playlist');
+            var $tracks = $playlist.find('li a');
+            var len = $tracks.length;
 
-            function init() {
-                var current = 0;
-                var $audio = $('#player');
-                var $playlist = $('#playlist');
-                var $tracks = $playlist.find('li a');
-                var len = $tracks.length - 1;
-                $playlist.on('click', 'a', function (e) {
-                    e.preventDefault();
-                    link = $(this);
-                    current = link.parent().index();
-                    run(link, $audio[0]);
-                });
-                $audio[0].addEventListener('ended', function (e) {
-                    current++;
-                    if (current == len) {
-                        current = 0;
-                        link = $playlist.find('a')[0];
-                    } else {
-                        link = $playlist.find('a')[current];
-                    }
-                    run($(link), $audio[0]);
-                });
+            $playlist.on('click', 'a', function (e) {
+                e.preventDefault();
+                link = $(this);
+                current = link.parent().index();
+                console.log(current);
+                play(link, $audio[0]);
+            });
+            $audio[0].addEventListener('ended', function (e) {
+                playNext();
+            });
+            $('a#next').on('click', function (e) {
+                e.preventDefault();
+                playNext();
+            });
+            $('a#prev').on('click', function (e) {
+                e.preventDefault();
+                playPrev();
+            });
+
+            function playPrev() {
+                current--;
+                if (current <= 0) {
+                    current = len;
+                    link = $playlist.find('a')[0];
+                } else {
+                    link = $playlist.find('a')[current];
+                }
+                play($(link), $audio[0]);
             }
 
-            function run($link, $player) {
+            function playNext() {
+                current++;
+                if (current == len) {
+                    current = 0;
+                    link = $playlist.find('a')[0];
+                } else {
+                    link = $playlist.find('a')[current];
+                }
+                play($(link), $audio[0]);
+            }
+
+            function play($link, $player) {
                 $player.src = $link.attr('href');
                 par = $link.parent();
                 par.addClass('active').siblings().removeClass('active');
