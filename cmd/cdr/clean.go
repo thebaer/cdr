@@ -25,6 +25,9 @@ func cleanAction(c *cli.Context) error {
 		if !i.IsDir() && !strings.HasPrefix(i.Name(), ".") {
 			fName := i.Name()
 			trackName := cdr.RenameTrack(fName)
+			if trackName == "" {
+				return nil
+			}
 			fmt.Println("Renaming", fName, "to", trackName)
 			os.Rename(fName, trackName)
 		}
