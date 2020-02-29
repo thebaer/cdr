@@ -12,7 +12,7 @@ import (
 
 var cmdClean = cli.Command{
 	Name:   "clean",
-	Usage:  "clean and organize files",
+	Usage:  "clean and organize audio files in the current directory",
 	Action: cleanAction,
 }
 
