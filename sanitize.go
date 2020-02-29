@@ -55,8 +55,9 @@ func RenameTrack(file string) string {
 
 // Sanitize takes a string and removes problematic characters from it.
 func Sanitize(s string) string {
+	s = unidecode.Unidecode(s)
 	s = strings.Map(func(r rune) rune {
-		if r == '(' || r == ')' || r == '[' || r == ']' || r == '.' {
+		if r == '(' || r == ')' || r == '[' || r == ']' || r == '.' || r == ',' || r == '\'' || r == '"' || r == ';' {
 			return -1
 		}
 		if unicode.IsSpace(r) {
@@ -64,6 +65,5 @@ func Sanitize(s string) string {
 		}
 		return r
 	}, s)
-	s = unidecode.Unidecode(s)
 	return s
 }
