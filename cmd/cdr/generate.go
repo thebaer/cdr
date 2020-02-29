@@ -92,5 +92,10 @@ func serveAction(c *cli.Context) error {
 		log.Printf("GET /")
 	})
 
-	return http.ListenAndServe(":9991", nil)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "9991"
+	}
+	log.Printf("Serving on http://localhost:%s", port)
+	return http.ListenAndServe(":"+port, nil)
 }
