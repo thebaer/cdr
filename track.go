@@ -6,6 +6,7 @@ type (
 	}
 
 	Track struct {
+		Num    int
 		Title  string
 		Artist string
 

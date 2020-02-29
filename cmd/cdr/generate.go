@@ -26,6 +26,7 @@ var (
 
 func newMixtape(wd string) (*cdr.Mixtape, error) {
 	m := &cdr.Mixtape{Tracks: []cdr.Track{}}
+	c := 1
 
 	filepath.Walk(wd, func(path string, i os.FileInfo, err error) error {
 		if !i.IsDir() && !strings.HasPrefix(i.Name(), ".") && i.Name() != "index.html" {
@@ -34,6 +35,8 @@ func newMixtape(wd string) (*cdr.Mixtape, error) {
 				log.Printf("Skipping track %s: %v", i.Name(), err)
 				return nil
 			}
+			t.Num = c
+			c++
 			log.Println("Adding track", t.Title)
 			m.Tracks = append(m.Tracks, *t)
 		}
