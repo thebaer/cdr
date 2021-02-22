@@ -20,7 +20,7 @@ Of course, THIS PROGRAM IS FOR ILLUSTRATIVE PURPOSES ONLY AND SHOULD NOT BE USED
 
 ## `cdr` Usage
 
-1. Install `cdr` with `go get github.com/thebaer/cdr`
+1. Install `cdr` with `go get github.com/thebaer/cdr/cmd/cdr`
 1. Create a directory for your playlist
 1. Add audio files into the directory
 1. Make sure they're named in the order you want, and start with a two-digit track number, e.g. `01 - Track 1.mp3`
