@@ -38,6 +38,44 @@ You can also tweak the original template _before_ it generates the final page.
 1. Edit this file to your liking, being sure to retain the `{{template ...}}` lines in the file
 1. Run `cdr burn` -- it'll generate your page from this template instead of the default! 
 
+### Template parts
+
+These are the full template codes you can use to include certain elements.
+
+#### Player + Playlist
+
+This shows the audio player with play / pause actions, plus the playlist. You don't need to use any other template codes beyond this.
+
+```
+{{template "full-player" .Tracks}}
+```
+
+#### Granular Elements
+
+Optionally, you can use these more granular template codes for better control over your mixtape.
+
+**IMPORTANT!** When using anything besides the `full-player` code, you will ALWAYS want to include the following code in your template. Otherwise your mixtape won't work well!
+
+```
+{{template "playlist-js"}}
+```
+
+#### Player
+
+Shows only the audio player.
+
+```
+{{template "player" .Tracks}}
+```
+
+#### Playlist
+
+Show the playlist of tracks on the mixtape.
+
+```
+{{template "playlist" .Tracks}}
+```
+
 ### Developers
 
 Requires Go 1.16 and above.
