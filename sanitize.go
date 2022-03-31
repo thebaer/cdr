@@ -41,15 +41,16 @@ func RenameTrack(file string) string {
 		return ""
 	}
 
+	ext := t.Filename[strings.LastIndex(t.Filename, "."):]
+
 	// Extract playlist track number from filename
 	fMatch := trackNameReg.FindStringSubmatch(t.Filename)
 	if len(fMatch) < 2 {
-		log.Fatal("Unexpect filename format")
+		log.Printf("No track number found: '%s'. Continuing anyway.\n", t.Filename)
+		return fmt.Sprintf("%s-%s%s", Sanitize(t.Artist), Sanitize(t.Title), ext)
 	}
+
 	trackNum := fMatch[1]
-
-	ext := t.Filename[strings.LastIndex(t.Filename, "."):]
-
 	return fmt.Sprintf("%s-%s-%s%s", trackNum, Sanitize(t.Artist), Sanitize(t.Title), ext)
 }
 
