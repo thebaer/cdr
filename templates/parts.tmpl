@@ -9,7 +9,7 @@
     <ol id="playlist">
         {{range $i, $el := .}}
         <li{{if eq $i 0}} class="active"{{end}}>
-            <a class="track" href="{{$el.Filename}}">{{$el.Artist}} - {{$el.Title}}</a>
+            <a class="track" href="{{$el.Filename}}" data-artist="{{$el.Artist}}" data-title="{{$el.Title}}">{{$el.Artist}} - {{$el.Title}}</a>
             {{template "track-info" $el}}
         </li>
         {{end}}
@@ -39,6 +39,10 @@
                 link = $(this);
                 current = link.parent().index();
                 play(link, $audio[0]);
+            });
+            $audio[0].addEventListener('play', function (e) {
+                var $link = $('li.active > a');
+                setTrackMetadata($link);
             });
             $audio[0].addEventListener('ended', function (e) {
                 playNext();
@@ -70,12 +74,28 @@
                 play($(link), $audio[0]);
             }
 
+            function setTrackMetadata($link) {
+                if ('mediaSession' in navigator) {
+                    // Set track metadata
+                    navigator.mediaSession.metadata = new MediaMetadata({
+                        title: $link.data('title'),
+                        artist: $link.data('artist'),
+                    });
+                }
+            }
+
             function play($link, $player) {
                 $player.src = $link.attr('href');
                 par = $link.parent();
                 par.addClass('active').siblings().removeClass('active');
                 $player.load();
                 $player.play();
+            }
+
+            if ('mediaSession' in navigator) {
+                // Listen for MediaSession events
+                navigator.mediaSession.setActionHandler('nexttrack', playNext);
+                navigator.mediaSession.setActionHandler('previoustrack', playPrev);
             }
         });
 	</script>
