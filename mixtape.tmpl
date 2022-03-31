@@ -51,25 +51,25 @@
 	<body>
 		<div id="wrapper">
 			<h1>Mixtape</h1>
-            {{template "player" .Tracks}}
+			{{template "player" .Tracks}}
 			<div id="controls">
 				<a id="prev" href="#prev">&#x23EE; Previous</a>
 				<a id="next" href="#next">Next &#x23ED;</a>
 			</div>
-            {{template "playlist" .Tracks}}
-            {{template "playlist-js"}}
+			{{template "playlist" .Tracks}}
+			{{template "playlist-js"}}
 		</div>
 	</body>
 </html>
 {{end}}
 
 {{define "track-info"}}
-    {{if eq .Num 1}}
+	{{if eq .Num 1}}
 		<p>[Here I might introduce this mix.]</p>
 		<p>[Some notes about track 1.]</p>
-    {{else if eq .Num 2}}
+	{{else if eq .Num 2}}
 		<p>[Some notes about track 2.]</p>
-    {{else if eq .Num 5}}
+	{{else if eq .Num 5}}
 		<p>[Some notes about track 5.]</p>
-    {{end}}
+	{{end}}
 {{end}}
