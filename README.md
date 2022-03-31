@@ -38,6 +38,10 @@ You can also tweak the original template _before_ it generates the final page.
 1. Edit this file to your liking, being sure to retain the `{{template ...}}` lines in the file
 1. Run `cdr burn` -- it'll generate your page from this template instead of the default! 
 
+### Developers
+
+Requires Go 1.16 and above.
+
 ## Commands
 
 ```

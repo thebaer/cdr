@@ -1,8 +1,7 @@
-//go:generate inline -o templates.go -p cdr mixtape.tmpl templates/parts.tmpl
-
 package cdr
 
 import (
+	_ "embed"
 	"html/template"
 	"io"
 	"io/ioutil"
@@ -10,17 +9,10 @@ import (
 )
 
 func Render(m *Mixtape, w io.Writer) error {
-	partsRawTmpl, err := ReadAsset("templates/parts.tmpl", false)
-	if err != nil {
-		return err
-	}
 	mixtapeRawTmpl, err := ioutil.ReadFile("mixtape.tmpl")
 	if err != nil {
-		log.Print("Unable to load local mixtape.tmpl; falling back to default")
-		mixtapeRawTmpl, err = ReadAsset("mixtape.tmpl", false)
-		if err != nil {
-			return err
-		}
+		log.Print("Unable to load custom mixtape.tmpl; falling back to default")
+		mixtapeRawTmpl = defaultMixtapeTmpl
 	} else {
 		log.Print("Generating from local mixtape.tmpl")
 	}
