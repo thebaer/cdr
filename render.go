@@ -1,7 +1,6 @@
 package cdr
 
 import (
-	_ "embed"
 	"html/template"
 	"io"
 	"io/ioutil"
