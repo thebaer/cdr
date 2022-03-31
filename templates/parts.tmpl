@@ -58,7 +58,7 @@
 
             function playPrev() {
                 current--;
-                if (current <= 0) {
+                if (current < 0) {
                     current = len - 1;
                 }
                 link = $playlist.find('a.track')[current];
